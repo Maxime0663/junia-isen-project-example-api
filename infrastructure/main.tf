@@ -18,9 +18,10 @@ module "virtual_network" {
 
   database_subnet_name          = var.database_subnet_name
   database_subnet_address_space = var.database_subnet_address_space
-
+  /*
   python_app_subnet_name        = var.python_app_subnet_name
   python_app_subnet_address_space = var.python_app_subnet_address_space
+  */
 }
 
 module "database" {
@@ -49,11 +50,8 @@ module "blob_storage" {
 module "app_service" {
   source                  = "./modules/app_service"                     
   resource_group_name     = module.resource_group.resource_group_name   
-  resource_group_location = module.resource_group.resource_group_location 
-
-  app_service_plan_name   = var.app_service_plan_name                 
+  resource_group_location = module.resource_group.resource_group_location                 
   app_service_sku         = var.app_service_sku                        
-
-  app_service_name        = var.app_service_name                       
-  app_service_runtime     = var.app_service_runtime                   
+                    
+                 
 }
