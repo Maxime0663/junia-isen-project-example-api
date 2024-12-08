@@ -13,7 +13,7 @@ resource "azurerm_private_dns_zone_virtual_network_link" "private_dns_zone_virtu
 resource "azurerm_postgresql_flexible_server" "database_server" {
   name                = var.server_name
   resource_group_name = var.resource_group_name
-  location            = var.resource_group_location
+  location            = "France Central"
 
   delegated_subnet_id = var.database_subnet_id
   public_network_access_enabled = false

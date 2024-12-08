@@ -62,12 +62,24 @@ output "db_admin_password" {
   sensitive   = true
 }
 
-# App Service Outputs
-
-output "app_service_name" {
-  value       = azurerm_app_service.app_service.name
+# Blob Storage Outputs
+output "storage_account_name" {
+  value       = module.blob_storage.storage_account_name
 }
 
-output "app_service_default_hostname" {
-  value       = azurerm_app_service.app_service.default_site_hostname
+output "storage_blob_name" {
+  value       = module.blob_storage.storage_blob_name
+}
+
+output "storage_account_id" {
+  value       = module.blob_storage.storage_account_id
+}
+
+output "storage_url" {
+  value       = module.blob_storage.storage_url
+}
+
+# App Service Outputs
+output "url" {
+  value       = module.app_service.url
 }
