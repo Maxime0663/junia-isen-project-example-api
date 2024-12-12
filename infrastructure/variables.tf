@@ -15,7 +15,7 @@ variable resource_group_name {
 variable resource_group_location {
   description = "The location of the resource group"
   type        = string
-  default     = "West Europe"
+  default     = "France Central"
 }
 
 # Virtual Network Variables
@@ -29,7 +29,7 @@ variable virtual_network_name {
 variable virtual_network_address_space {
   description = "The address space that is used by the virtual network"
   type        = list(string)
-  default     = ["10.0.0.0/16"]
+  default     = ["192.168.0.0/16"]
 }
 
 variable database_subnet_name {
@@ -41,9 +41,8 @@ variable database_subnet_name {
 variable database_subnet_address_space {
   description = "The address space that is used by the database subnet"
   type        = list(string)
-  default     = ["10.0.1.0/24"]
+  default     = ["192.168.1.0/24"]
 }
-
 
 variable python_app_subnet_name {
   description = "The name of the Python app subnet"
@@ -54,9 +53,8 @@ variable python_app_subnet_name {
 variable python_app_subnet_address_space {
   description = "The address space that is used by the Python app subnet"
   type        = list(string)
-  default     = ["10.0.2.0/24"]
+  default     = ["192.168.2.0/24"]
 }
-
 
 variable application_gateway_subnet_name {
   description = "The name of the Application Gateway subnet"
@@ -67,10 +65,8 @@ variable application_gateway_subnet_name {
 variable application_gateway_subnet_address_space {
   description = "The address space that is used by the Application Gateway subnet"
   type        = list(string)
-  default     = ["10.0.3.0/24"]
+  default     = ["192.168.3.0/24"]
 }
-
-
 
 # Database Variables
 
@@ -90,7 +86,7 @@ variable database_admin_username {
   description = "The username of the database admin"
   type        = string
   sensitive   = true
-  default     = "Maxime" 
+  default     = "maxime.blouin@student.junia.com" 
 }
 
 variable database_admin_password {
@@ -143,7 +139,7 @@ variable "app_service_sku" {
 variable storage_account_name {
   description = "The name of the storage account"
   type        = string
-  default     = null
+  default     = "storageblouinpetit"
 }
 
 # Application Gateway Variables
@@ -170,10 +166,4 @@ variable application_gateway_frontend_ip_configuration {
   description = "The frontend IP configuration for the Application Gateway"
   type        = string
   default     = "app-gateway-frontend-ip"
-}
-
-locals {
-  blob_storage = {
-    name = "projetblobstorage"
-  }
 }

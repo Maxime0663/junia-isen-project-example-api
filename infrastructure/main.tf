@@ -1,19 +1,5 @@
-terraform {
-  required_providers {
-    azurerm = {
-      source  = "hashicorp/azurerm"
-      version = "~>3.0"
-    }
-    random = {
-      source  = "hashicorp/random"
-      version = "~>3.0"
-    }
-  }
-}
-
 provider "azurerm" {
   features {}
-  skip_provider_registration = true
   subscription_id = var.subscription_id
 }
 
@@ -40,6 +26,9 @@ module "virtual_network" {
   
   python_app_subnet_name        = var.python_app_subnet_name
   python_app_subnet_address_space = var.python_app_subnet_address_space
+
+  application_gateway_subnet_name = var.application_gateway_subnet_name
+  application_gateway_subnet_address_space = var.application_gateway_subnet_address_space
   
 }
 
@@ -62,9 +51,23 @@ module "blob_storage" {
   source              = "./modules/blob_storage"
   resource_group_name = module.resource_group.resource_group_name
   resource_group_location   = module.resource_group.resource_group_location
-  storage_account_name = local.blob_storage.name
+  storage_account_name = var.storage_account_name
   storage_subnet_id    = module.virtual_network.python_app_subnet_id
   ip_authorized             = data.http.ip.body
+
+  app_service_principal_id = module.app_service.principal_id
+}
+
+module "application_gateway" {
+  source                              = "./modules/application_gateway"
+  resource_group_name                 = module.resource_group.resource_group_name
+  resource_group_location             = module.resource_group.resource_group_location
+  application_gateway_name            = var.application_gateway_name
+  application_gateway_sku             = var.application_gateway_sku
+  application_gateway_capacity        = var.application_gateway_capacity
+  application_gateway_frontend_ip_configuration = var.application_gateway_frontend_ip_configuration
+  subnet_id                           = module.virtual_network.application_gateway_subnet_id
+  backend_fqdn                        = "${var.app_service_name}.azurewebsites.net"
 }
 
 module "app_service" {
@@ -74,9 +77,10 @@ module "app_service" {
   app_service_name = var.app_service_name
   app_service_plan_name = var.app_service_plan_name
 
-  docker_image = "maximeblouin/cloud_computing_api_project:feat-database-and-blob"
+  docker_image = "maximeblouin/cloud_computing_api_project:main"
   docker_registry_url = "https://ghcr.io"
 
+  gateway_ip = module.application_gateway.public_ip_address  
   subnet_id = module.virtual_network.python_app_subnet_id
 
   app_settings = {
