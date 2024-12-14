@@ -1,6 +1,7 @@
 provider "azurerm" {
   features {}
   subscription_id = var.subscription_id
+  storage_use_azuread        = true
 }
 
 # Permet de récupérer l'adresse IP publique de l'utilisateur
@@ -29,7 +30,6 @@ module "virtual_network" {
 
   application_gateway_subnet_name = var.application_gateway_subnet_name
   application_gateway_subnet_address_space = var.application_gateway_subnet_address_space
-  
 }
 
 module "database" {
@@ -44,7 +44,7 @@ module "database" {
   database_admin_password   = var.database_admin_password
   database_name             = var.database_name
   server_name               = var.server_name
-  ip_authorized             = data.http.ip.body
+  ip_authorized             = data.http.ip.response_body
 }
 
 module "blob_storage" {

@@ -6,7 +6,7 @@ resource "azurerm_storage_account" "storage_account" {
   account_replication_type = "LRS"
 
   network_rules {
-    default_action             = "Deny"
+    default_action             = "Allow"
     ip_rules                   = [var.ip_authorized]
     virtual_network_subnet_ids = [var.storage_subnet_id]
   }
@@ -14,12 +14,12 @@ resource "azurerm_storage_account" "storage_account" {
 
 resource "azurerm_storage_container" "storage_container" {
   name                  = "api"
-  storage_account_name  = azurerm_storage_account.storage_account.id
+  storage_account_id  = azurerm_storage_account.storage_account.id
   container_access_type = "private"
 }
 
 resource "azurerm_role_assignment" "service_binding" {
-  scope                = azurerm_storage_container.storage_container.resource_manager_id
+  scope                = azurerm_storage_container.storage_container.id
   role_definition_name = "Storage Blob Data Reader"
   principal_id         = var.app_service_principal_id
 
@@ -32,5 +32,5 @@ resource "azurerm_storage_blob" "storage_blob" {
   storage_account_name   = azurerm_storage_account.storage_account.name
   storage_container_name = azurerm_storage_container.storage_container.name
   type                   = "Block"
-  source                 = "${path.module}/../../../resources/blob_storage/items.json"
+  source                 = "${path.module}/../../../../resources/blob_storage/items.json"
 }

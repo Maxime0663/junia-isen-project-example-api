@@ -1,3 +1,9 @@
+# IP of the application gateway
+output "public_ip_address" {
+  value = module.application_gateway.public_ip_address
+  description = "The public IP address to access the APP: "
+}
+
 # Resource Group Outputs
 
 output "resource_group_name" {

@@ -107,11 +107,10 @@ variable server_name {
   default     = "projetdatabase-srv"
 }
 
-
 variable "ip_authorized" {
   description = "The IP address that is authorized to access the database"
   type        = string
-  default     = "data.http.ip.body"
+  default     = "data.http.ip.response_body"
 }
 
 # App Service Variables
