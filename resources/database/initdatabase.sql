@@ -1,11 +1,11 @@
 -- Création de la base de données
-CREATE TABLE Customers (
+CREATE TABLE Users (
     id_customer SERIAL PRIMARY KEY,
     firstname VARCHAR(100) NOT NULL,
     lastname VARCHAR(100) NOT NULL
 );
 
-CREATE TABLE Orders (
+CREATE TABLE Baskets (
     id_order SERIAL PRIMARY KEY,
     customer_id INT NOT NULL REFERENCES Customers(id_customer) ON DELETE CASCADE,
     product_list TEXT NOT NULL
